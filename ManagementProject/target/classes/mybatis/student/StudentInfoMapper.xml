@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yizhi.student.dao.StudentInfoDao">
+    <insert id="save">
+        insert into s_student_info (student_id,exam_id,class_id,student_name,certify,mail_address,foreign_lanaguage,student_sex,nation,political,card_id,telephone,subject_type,tocollege,tocampus,tomajor,birthplace
+         ,grade,isstate,birthday,note,add_time,add_userid,edit_time,edit_userid)  values
+            (#{studentId},#{examId},#{classId},#{studentName},#{certify},#{mailAddress},#{foreignLanaguage},#{studentSex},#{nation},#{political},#{cardId},#{telephone},
+            #{subjectType},#{tocollege},null,#{tomajor},#{birthplace},#{grade},#{isstate},#{birthday},#{note},#{addTime},#{addUserid},#{editTime},#{editUserid})
+    </insert>
+    <update id="update">
+        update s_student_info set student_id = #{studentId},exam_id=#{examId},class_id=#{classId},student_name=#{studentName},certify=#{certify},mail_address=#{mailAddress},foreign_lanaguage=#{foreignLanaguage},student_sex=#{studentSex},nation=#{nation}
+                                ,political=#{political},card_id=#{cardId},telephone=#{telephone},subject_type=#{subjectType},tocollege=#{tocollege},tomajor=#{tomajor},birthplace=#{birthplace}
+                                   ,grade=#{grade},isstate=#{isstate},birthday=#{birthday},note=#{note},add_time=#{addTime},add_userid=#{addUserid},edit_time=#{editTime},edit_userid =#{editUserid} where id =#{id}
+    </update>
+    <delete id="remove">
+        delete from s_student_info where id = #{id}
+    </delete>
+    <delete id="batchRemove">
+        delete from s_student_info where id in
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+
+    </delete>
+
+
+    <select id="list" resultType="com.yizhi.student.domain.StudentInfoDO">
+
+    select * from s_student_info
+        <where>
+            <if test="tocollegeId != '' and tocollegeId != null">
+                tocollege = #{tocollegeId}
+            </if>
+            <if test="tomajorId != '' and tomajorId != null">
+                and tomajor = #{tomajorId}
+            </if>
+            <if test="classId != '' and classId != null">
+                and class_id = #{classId}
+            </if>
+            <if test="name !='' and name != null" >
+                and student_name like concat('%','${name}','%')
+            </if>
+        </where>
+        LIMIT ${currPage}, ${pageSize}
+
+    </select>
+    <select id="count" resultType="java.lang.Integer">
+        select count(*) from s_student_info
+    </select>
+    <select id="get" resultType="com.yizhi.student.domain.StudentInfoDO">
+        select * from s_student_info where id = #{id}
+    </select>
+</mapper>
