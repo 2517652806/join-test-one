@@ -34,6 +34,10 @@ public class StudentInfoServiceImpl implements StudentInfoService {
 
 	@Override
 	public List<StudentInfoDO> list(Map<String, Object> map){
+		int i = Integer.parseInt(String.valueOf(map.get("currPage")));
+		int n = Integer.parseInt(String.valueOf(map.get("pageSize")));
+		map.put("currPage",(i-1)*n);
+		map.put("pageSize",n);
 		return studentInfoDao.list(map);
 	}
 
